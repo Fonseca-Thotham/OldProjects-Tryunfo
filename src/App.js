@@ -16,6 +16,7 @@ class App extends React.Component {
       isSaveButtonDisabled: true,
       deck: [],
       filterName: '',
+      filterRare: 'todas',
     };
 
   enableButtonSubmit = () => {
@@ -83,6 +84,7 @@ class App extends React.Component {
       const {
         deck,
         filterName,
+        filterRare,
       } = this.state;
       return (
         <div>
@@ -98,6 +100,21 @@ class App extends React.Component {
                 data-testid="name-filter"
               />
             </label>
+            <label htmlFor="filterRare">
+              Raridade:
+              <select
+                name="filterRare"
+                value={ filterRare }
+                onChange={ this.changeState }
+                data-testid="rare-filter"
+                id="filterRare"
+              >
+                <option value="todas">Todas</option>
+                <option value="normal">Normal</option>
+                <option value="raro"> Raro </option>
+                <option value="muito raro">Muito raro</option>
+              </select>
+            </label>
           </div>
           <Form
             { ...this.state }
@@ -112,6 +129,9 @@ class App extends React.Component {
               ? (
                 deck
                   .filter((item) => (item.cardName.includes(filterName)))
+                  .filter((value) => (
+                    filterRare !== 'todas' ? value.cardRare === filterRare : true
+                  ))
                   .map((cards) => (
                     <section key={ cards.cardName }>
                       <Card
