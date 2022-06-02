@@ -12,6 +12,7 @@ class App extends React.Component {
       cardImage: '',
       cardRare: '',
       cardTrunfo: false,
+      hasTrunfo: false,
       isSaveButtonDisabled: true,
     };
 
@@ -44,7 +45,15 @@ class App extends React.Component {
       this.setState({ [id]: value }, this.enableButtonSubmit);
     };
 
+    tryunfo = () => {
+      const { cardTrunfo } = this.state;
+      if (cardTrunfo === true) {
+        this.setState({ hasTrunfo: true });
+      }
+    }
+
     Saved = () => {
+      this.tryunfo();
       this.setState({
         cardName: '',
         cardDescription: '',
@@ -53,6 +62,7 @@ class App extends React.Component {
         cardAttr3: '0',
         cardImage: '',
         cardRare: 'normal',
+        cardTrunfo: false,
       });
     }
 
