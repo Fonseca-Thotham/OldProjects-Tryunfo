@@ -15,6 +15,7 @@ class App extends React.Component {
       hasTrunfo: false,
       isSaveButtonDisabled: true,
       deck: [],
+      filterName: '',
     };
 
   enableButtonSubmit = () => {
@@ -53,7 +54,7 @@ class App extends React.Component {
       }
     }
 
-    btnClear = (card) => {
+    /* btnClear = (card) => {
       const { deck } = this.state;
       const trunfo = deck.find(() => (card.cardTrunfo === true));
       if (trunfo.cardTrunfo === true) {
@@ -61,7 +62,7 @@ class App extends React.Component {
       }
       const clear = deck.filter((deck2) => (card.cardName !== deck2.cardName));
       this.setState({ deck: clear });
-    }
+    } */
 
     Saved = () => {
       this.tryunfo();
@@ -79,10 +80,25 @@ class App extends React.Component {
     }
 
     render() {
-      const { deck } = this.state;
+      const {
+        deck,
+        filterName,
+      } = this.state;
       return (
         <div>
           <h1>Tryunfo</h1>
+          <div>
+            <label htmlFor="filterName">
+              Filtro de busca:
+              <input
+                name="filterName"
+                onChange={ this.changeState }
+                id="filterName"
+                type="text"
+                data-testid="name-filter"
+              />
+            </label>
+          </div>
           <Form
             { ...this.state }
             onInputChange={ this.changeState }
@@ -92,27 +108,38 @@ class App extends React.Component {
             { ...this.state }
           />
           <div>
-            { deck.map((cards, i) => (
-              <div key={ `${cards.cardName} ${i}` }>
-                <Card
-                  cardName={ cards.cardName }
-                  cardDescription={ cards.cardDescription }
-                  cardAttr1={ cards.cardAttr1 }
-                  cardAttr2={ cards.cardAttr2 }
-                  cardAttr3={ cards.cardAttr3 }
-                  cardImage={ cards.cardImage }
-                  cardRare={ cards.cardRare }
-                  cardTrunfo={ cards.cardTrunfo }
-                />
-                <button
-                  type="button"
-                  data-testid="delete-button"
-                  onClick={ () => this.btnClear(cards) }
-                >
-                  Excluir
-                </button>
-              </div>
-            ))}
+            { deck !== undefined
+              ? (
+                deck
+                  .filter((item) => (item.cardName.includes(filterName)))
+                  .map((cards) => (
+                    <section key={ cards.cardName }>
+                      <Card
+                        cardName={ cards.cardName }
+                        cardDescription={ cards.cardDescription }
+                        cardAttr1={ cards.cardAttr1 }
+                        cardAttr2={ cards.cardAttr2 }
+                        cardAttr3={ cards.cardAttr3 }
+                        cardImage={ cards.cardImage }
+                        cardRare={ cards.cardRare }
+                        cardTrunfo={ cards.cardTrunfo }
+                      />
+                      <button
+                        onClick={ (e) => {
+                          if (card.cardTrunfo) {
+                            this.setState({ hasTrunfo: false });
+                          }
+                          e.target.parentElement.remove();
+                        } }
+                        type="button"
+                        data-testid="delete-button"
+                      >
+                        Excluir
+                      </button>
+                    </section>
+                  ))
+              )
+              : null}
           </div>
         </div>
       );
