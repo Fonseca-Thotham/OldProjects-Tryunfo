@@ -14,6 +14,7 @@ class App extends React.Component {
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
+      deck: [],
     };
 
   enableButtonSubmit = () => {
@@ -54,7 +55,8 @@ class App extends React.Component {
 
     Saved = () => {
       this.tryunfo();
-      this.setState({
+      this.setState((previous) => ({
+        deck: [...previous.deck, previous],
         cardName: '',
         cardDescription: '',
         cardAttr1: '0',
@@ -63,15 +65,14 @@ class App extends React.Component {
         cardImage: '',
         cardRare: 'normal',
         cardTrunfo: false,
-      });
+      }));
     }
 
     render() {
+      const { deck } = this.state;
       return (
-        <>
-          <div>
-            <h1>Tryunfo</h1>
-          </div>
+        <div>
+          <h1>Tryunfo</h1>
           <Form
             { ...this.state }
             onInputChange={ this.changeState }
@@ -80,7 +81,23 @@ class App extends React.Component {
           <Card
             { ...this.state }
           />
-        </>
+          <div>
+            { deck.map((cards, i) => (
+              <div key={ `${cards.cardName} ${i}` }>
+                <Card
+                  cardName={ cards.cardName }
+                  cardDescription={ cards.cardDescription }
+                  cardAttr1={ cards.cardAttr1 }
+                  cardAttr2={ cards.cardAttr2 }
+                  cardAttr3={ cards.cardAttr3 }
+                  cardImage={ cards.cardImage }
+                  cardRare={ cards.cardRare }
+                  cardTrunfo={ cards.cardTrunfo }
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       );
     }
 }
