@@ -146,7 +146,7 @@ class App extends React.Component {
                       />
                       <button
                         onClick={ (e) => {
-                          if (card.cardTrunfo) {
+                          if (cards.cardTrunfo) {
                             this.setState({ hasTrunfo: false });
                           }
                           e.target.parentElement.remove();
