@@ -53,6 +53,16 @@ class App extends React.Component {
       }
     }
 
+    btnClear = (card) => {
+      const { deck } = this.state;
+      const trunfo = deck.find(() => (card.cardTrunfo === true));
+      if (trunfo.cardTrunfo === true) {
+        this.setState({ hasTrunfo: false });
+      }
+      const clear = deck.filter((deck2) => (card.cardName !== deck2.cardName));
+      this.setState({ deck: clear });
+    }
+
     Saved = () => {
       this.tryunfo();
       this.setState((previous) => ({
@@ -94,6 +104,13 @@ class App extends React.Component {
                   cardRare={ cards.cardRare }
                   cardTrunfo={ cards.cardTrunfo }
                 />
+                <button
+                  type="button"
+                  data-testid="delete-button"
+                  onClick={ () => this.btnClear(cards) }
+                >
+                  Excluir
+                </button>
               </div>
             ))}
           </div>
